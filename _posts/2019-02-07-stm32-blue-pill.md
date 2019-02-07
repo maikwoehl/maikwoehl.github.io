@@ -13,3 +13,6 @@ Zum Hochladen des Bootloaders muss das Arduino-STM32 Projekt von rogerclarkmelbo
 Dann muss der STM32 an einen Serial-to-USB-Adapter angeschlossen werden und mit stm32flash geflasht werden. BOOT0 muss auf HIGH gesetzt werden.
 
 Danach ist der STM32 bereit zum Upload. Beim Start des Upload-Vorgangs lädt pulsiert PC13 um anzuzeigen, dass ein manueller RESET notwendig ist. Den sollte man nicht verpassen, dann startet der Download auf den STM32. 
+
+* https://github.com/rogerclarkmelbourne/Arduino_STM32/wiki/Flashing-Bootloader-for-BluePill-Boards
+* https://medium.com/@paramaggarwal/programming-an-stm32f103-board-using-usb-port-blue-pill-953cec0dbc86
