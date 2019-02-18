@@ -7,4 +7,4 @@ order: 2
 Here is a collection of some good sites to read and to know about:
 
 
-- [`git rebase` magic](https://git-scm.com/book/de/v1/Git-Tools-Änderungshistorie-verändern)
+[Magic with git rebase (german)](https://git-scm.com/book/de/v1/Git-Tools-Änderungshistorie-verändern)
