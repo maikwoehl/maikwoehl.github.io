@@ -4,6 +4,8 @@ author: Maik
 layout: post
 ---
 
+**Nachtrag vom 22.06.2019:** Ich traf diese Aussagen nicht als Amtshandlung und distanziere mich vollständig von anderslautenden Behauptung und Gerüchten.
+
 Immer wieder werde ich während meiner täglichen Arbeit in den studentischen Gremien und auch durch die Gesprächen auf dem Campus, die man unweigerlich mit anhört, darauf aufmerksam, dass ~~den~~ einzelnen Studierenden, die zu uns an die Hochschule kommen, das Verständnis für einfache Zusammenhänge und grundlegende Fähigkeiten, wie Rechtschreibung, Grammatik, ordentliche Aussprache und Höflichkeit, fehlt. Die Studierenden im Ehrenamt ~~und die Mitarbeiter der Hochschule~~ sind doch immer wieder verwundert, wie es zu sowas kommen konnte. 
 
 Einerseits ist die *Öffnung der Hochschulen* ein Grund: Durch den Wegfall der Studiengebühren in Höhe von 500 € in Niedersachsen und der Anpassung der Zugangsvoraussetzung zu Fachhochschulen, kommen die Studierenden aus deutlich heterogeneren Verhältnissen.
