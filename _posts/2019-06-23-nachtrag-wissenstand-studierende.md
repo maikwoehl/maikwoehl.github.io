@@ -1,5 +1,5 @@
 ---
-title: Nachtrag - Wissensstand von Studierenden
+title: Nachtrag zum Studierenden-Eintrag
 author: Maik
 layout: post
 ---
