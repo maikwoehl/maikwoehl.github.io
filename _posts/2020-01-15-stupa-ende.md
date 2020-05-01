@@ -1,7 +1,10 @@
 ---
+layout: post
 title: Ende nach zwei Jahren
 author: Maik
-layout: post
+categories: journal
+tags: [hochschule]
+image: hochschule_s.jpg
 ---
 
 Der trübe Nebel, der über dem Campus der Hochschule lag, lichtete sich im März 2018. In diesem Monat wurde ich vom Studierendenparlament der Hochschule in den Vorstand gewählt. Es hat mich entsendet, um seine Interessen in der Hochschule und Gesellschaft zu vertreten. Diese Aufgabe kommt mit großer Verantwortung und vielen Fettnäpfchen. Doch um zu verstehen, was es damit auf sich hat, muss ich etwas ausholen.
