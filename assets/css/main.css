@@ -140,6 +140,8 @@ hr {
 
 .post-container {
   margin-bottom: 4rem;
+  hyphens: auto;
+  text-align: justify;
 }
 
 .posts {
