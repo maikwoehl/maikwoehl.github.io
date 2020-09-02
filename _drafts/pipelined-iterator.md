@@ -47,18 +47,9 @@ Due to the use case for embedded software the execution phase may need more than
 
 A stop signal flushes the buffers except the last one. The write process must be completed to prevent loss of already calculated results. The write phase is defined as the official data exit because the data flow path inside the pipeline ends there. So the write phase needs a done flag.
 
-So far for the exceptions. Every phase needs some basic control signals:
+# Proof-of-concept
 
-```rust
-struct Control {
-    clk: bool,
-    rst: bool,
-    stall: bool,
-    halt: bool,
-}
-```
-
-Now we need a structure for the data:
+Let's start with a data structure:
 
 ```rust
 struct IterData<T> {
@@ -66,9 +57,7 @@ struct IterData<T> {
 }
 ```
 
-The data is generic over `T` because the concrete type is not known at this point.
-
-As we can implement traits in Rust we can introduce a *Pipeline* trait and can get rid of an explicit control structure:
+The data is generic over `T` because the concrete type is not known at this point. As we can implement traits in Rust we can introduce a *Pipeline* trait:
 
 ```rust
 trait Pipeline {
@@ -79,8 +68,59 @@ trait Pipeline {
 }
 ```
 
-Now we are able to create our phase structures with a pipeline implementation. 
+Now we are able to create our phase structures with a pipeline implementation. For this we need an example situation. Let's introduce a testsystem: We have a list of test identifier that we can iterate over. For every test we want to give it to a program that handles the test execution. The test program has the following interface:
 
+```rust
+fn test(
+    test_control: &mut TestControl,
+    input:  &mut DevicesInput,
+    next_key: &mut bool,
+    halt: &mut bool); 
+``` 
+
+The Rust-Ownership model requires the execution phase to be the owner of the variables passed to this function. Now we know the required informations and can design our phases.
+
+## Fetch
+
+The fetch phase holds an iterator and reads from the list of test identifier. When the list exhausted a `done` signal must be send.
+
+```rust
+struct Fetch {
+    test_ids: Iter<Vec<String>>,
+    index: u32,
+    done: bool,
+}
+
+impl Fetch {
+    fn new(id_iter: Iter<Vec<String>>) -> Self {
+        Self {
+            test_ids: id_iter,
+            index: 0, 
+            done: false,
+        }
+    }
+    fn run(&mut self) -> Option<String> {
+        match self.test_ids.next() {
+            Some(key) => Some(key),
+            None => {
+                self.done = true;
+                None
+            },
+        }
+    }
+    fn is_done(&self) -> bool {
+        self.done
+    }
+}
+```
+
+## Decode
+
+## Execution
+
+## Write
+
+## Conclusion 
 <!-- TODO: write about phase implementations -->
 
 
