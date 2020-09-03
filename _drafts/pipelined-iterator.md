@@ -49,72 +49,231 @@ A stop signal flushes the buffers except the last one. The write process must be
 
 # Proof-of-concept
 
-Let's start with a data structure:
+To proof the portability of the design pattern a reference implementation in Rust will be implemented. For simulation of the necessary interfaces of the Testsystem we introduce a TestControl data structure:
 
 ```rust
-struct IterData<T> {
+pub struct TestControl {
+    pub test_id: String,
+    pub enable: bool,
+    pub id_match: bool,
+    pub output: Vec<String>,
+}
+```
+
+Then we implement a rudimentary TestMachine that handles our requests:
+
+```rust
+pub struct TestMachine;
+
+impl TestMachine {
+    pub fn run(control: &mut TestControl) {
+       let test_ids = vec![
+           "ES_ASPLETM-272".to_string(),
+           "ES_ASPLETM-273".to_string(),
+           "ES_ASPLETM-274".to_string(),
+       ];
+
+       control.id_match = test_ids.contains(&control.test_id);
+
+       if control.enable {
+           // Do something
+       }
+    }
+}
+```
+
+Now we design our data structure that flows inside the pipeline:
+
+```rust
+pub struct IterData<T> {
     data: T,
 }
-```
 
-The data is generic over `T` because the concrete type is not known at this point. As we can implement traits in Rust we can introduce a *Pipeline* trait:
+impl<T> IterData<T> {
+    pub fn new(new_data: T) -> Self {
+        Self { data: new_data }
+    }
+}
 
-```rust
-trait Pipeline {
-    fn clk(&self) -> bool;
-    fn rst(&self) -> bool;
-    fn stall(&self) -> bool;
-    fn halt(&self) -> bool;
+impl<T> Deref for IterData<T> {
+    type Target = T;
+
+    fn deref(&self) -> &Self::Target {
+        &self.data
+    }
 }
 ```
 
-Now we are able to create our phase structures with a pipeline implementation. For this we need an example situation. Let's introduce a testsystem: We have a list of test identifier that we can iterate over. For every test we want to give it to a program that handles the test execution. The test program has the following interface:
+The data is generic over `T` because the concrete type is not known at this point. We implement the *Deref*-Trait for `IterData` to be able to access directly to the data inside. The data flow between phases is encapsulated inside a *Result* structure:
 
 ```rust
-fn test(
-    test_control: &mut TestControl,
-    input:  &mut DevicesInput,
-    next_key: &mut bool,
-    halt: &mut bool); 
-``` 
+pub type PhaseResult<T> = Result<IterData<T>, bool>;
+```
 
-The Rust-Ownership model requires the execution phase to be the owner of the variables passed to this function. Now we know the required informations and can design our phases.
+To ensure the constraints of the design pattern the following Trait is introduced:
+
+```rust
+pub trait Pipeline<I, O> {
+    fn clk(&mut self);
+    fn rst(&mut self);
+    fn stall(&mut self, flag: bool);
+    fn halt(&mut self, flag: bool);
+    fn run(&mut self) -> PhaseResult<O>;
+    fn pipe(&mut self, data: &PhaseResult<I>);
+}
+```
+
+We ensure that input and output data are encapsulated inside a `PhaseResult` and the entry and exit points of data flow.
+
+At last we need a control structure for every pipeline phase:
+
+```rust
+pub struct Control {
+    pub clk: bool,
+    pub rst: bool,
+    pub stall: bool,
+    pub halt: bool,
+}
+
+impl Control {
+    pub fn is_ready(&self) -> bool {
+        (self.clk == true) && (self.rst == false) && (self.stall == false) && (self.halt == false)
+    }
+}
+```
+Every phase needs a check mechanism for ready state. A macro implementation for this is possible. We look at that later.
+
+The next subsections will describe the four phases: Fetch, Decode, Execute and Write.
 
 ## Fetch
 
 The fetch phase holds an iterator and reads from the list of test identifier. When the list exhausted a `done` signal must be send.
 
 ```rust
-struct Fetch {
-    test_ids: Iter<Vec<String>>,
-    index: u32,
+pub struct Fetch {
+    test_ids: Vec<String>,
     done: bool,
+    index: usize,
+    control: Control,
 }
 
 impl Fetch {
-    fn new(id_iter: Iter<Vec<String>>) -> Self {
-        Self {
-            test_ids: id_iter,
-            index: 0, 
+    pub fn new(ids: Vec<String>) -> Fetch {
+        Fetch {
+            test_ids: ids,
             done: false,
+            index: 0,
+            control: Control::default(),
         }
     }
-    fn run(&mut self) -> Option<String> {
-        match self.test_ids.next() {
-            Some(key) => Some(key),
-            None => {
-                self.done = true;
-                None
-            },
-        }
-    }
-    fn is_done(&self) -> bool {
+    pub fn is_done(&self) -> bool {
         self.done
     }
 }
 ```
 
+That is followed by the pipeline definition:
+
+```rust
+impl Pipeline<(), String> for Fetch {
+    fn pipe(&mut self, data: &PhaseResult<()>) {
+        data.expect("to be nothing");
+    }
+    fn run(&mut self) -> PhaseResult<String> {
+        if self.control.is_ready() == false {
+            return Err(false);
+        }
+        self.control.clk = false;
+
+        match self.test_ids.get(self.index) {
+            Some(key) => {
+                self.index = self.index + 1;
+                Ok(IterData::new(key.clone()))
+            }
+            None => {
+                self.done = true;
+                Err(true)
+            }
+        }
+    }
+    fn clk(&mut self) {
+        self.control.clk = true;
+    }
+    fn rst(&mut self) {
+        self.control.rst = true;
+        self.done = false;
+        self.index = 0;
+        self.control.rst = false;
+    }
+    fn stall(&mut self, flag: bool) {
+        self.control.stall = flag;
+    }
+    fn halt(&mut self, flag: bool) {
+        self.control.halt = flag;
+    }
+}
+```
+
+Note that the input type is `()` as this is the first phase. The output type is `String` because we send a test-id into the pipeline. On every clock-cycle we get the test-id on current index, if there is one, increment the index counter and send it into the pipeline. If there is no key left, the following request will be branch to `None` and return `Err(true)` signaling an intended fetching error. 
+
+The signal functions can be implemented through a macro, because they don't change except the `rst`-signal, because a reset-procedure is different in every phase.
+
 ## Decode
+The next phase is decoding all informations and generates a TestControl structure to pass into the execution phase. At first we implement the decode phase:
+
+```rust
+pub struct Decode {
+    test_control: testsystem::TestControl,
+    control: Control,
+    test_id: String,
+}
+
+impl Decode {
+    pub fn new() -> Self {
+        Decode::default()
+    }
+    pub fn requests_reset(&self) -> bool {
+        self.test_control.id_match
+    }
+}
+```
+
+The phase offers a `requests_reset()`-function to answer for the question after a required reset due to previous test match. At next we implement the pipeline for this phase:
+
+```rust
+impl Pipeline<String, testsystem::TestControl> for Decode {
+    fn pipe(&mut self, data: &PhaseResult<String>) {
+        self.test_id = match data {
+            Ok(id) => {
+                let new_id = (**id).clone();
+                new_id
+            },
+            Err(_) => String::default(),
+        }
+    }
+    fn run(&mut self) -> PhaseResult<testsystem::TestControl> {
+        /* ready check */
+        self.test_control.test_id = self.test_id.clone();
+        if self.test_id != String::default() {
+            testsystem::TestMachine::run(&mut self.test_control);
+            if self.test_control.id_match {
+                self.test_control.enable = true;
+            }
+        }
+
+        Ok(IterData::new(self.test_control.clone()))
+    }
+    fn rst(&mut self) {
+        self.control.rst = true;
+        self.test_id = String::default();
+        self.test_control = testsystem::TestControl::default();
+        self.control.rst = false;
+    }
+    /* default implementations for clk, stall and halt */
+}
+```
+
+The noise is commented out in this code listing. The input type is `String` with the test-id and the output type is a TestControl structure. The test-id that enters this phase is cloned and saved internally. At next we clone the test-id into the TestControl data structure and check with our TestMachine-implementation if there is a test with the saved test-id. If there is, the test is marked as to be enabled and send into the pipe. 
 
 ## Execution
 
