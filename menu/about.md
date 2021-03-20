@@ -3,8 +3,12 @@ layout: page
 title: Willkommen!
 ---
 
-Das Studium der Elektrotechnik hat mich dazu bewegt, meine Gedanken auf meinem [alten Blog](http://wp.maikwoehl.de) aufzuschreiben. Da mir Wordpress aber zu umfangreich war, habe ich mich dazu entschieden auf [Jekyll](https://jekyll.com)  umzusteigen. Ich denke, das war ein guter Schritt.
+Die Schreiben eines Blogs hat mich schon seit Kindertagen fasziniert. Schon immer wollte ich interessante Gedanken mit anderen Teilen. So habe ich meine Gedanken früher auf meinem [alten Blog](https://wp.maikwoehl.de) geteilt und schreibe nun hier auf einem etwas aufgeräumteren Blog.
 
-Im Laufe des dualen Studiums der Elektrotechnik habe mehrere Phasen durchlebt. Von der Selbstisolation, über das Kennenlernen und die Partys bis zu einem größeren Bekanntheitsgrad als Vorsitzender des Studierendenparlaments. In diesem Amt habe ich auch gelernt, dass man sich nicht jede Kritik zu sehr zu Herzen nehmen darf. Die Zeit hat zu meiner Charakterbildung viel beigetragen.
+Mein Studium der Elektrotechnik mit dem Schwerpunkt auf der Technischen Informatik habe ich im Frühjahr 2021 erfolgreich abschließen können.
+
+Mich faszinieren neben den technischen Facetten der Technische Informatik (auch: Informationstechnik) auch Sportarten, wie das Bogenschießen und der Gesellschaftstanz. In der Tanzschule habe ich bis zur Verleihung der Goldmedaille teilgenommen und musste zu Gunsten des Studiums leider abbrechen.
+
+Darüber hinaus begeistere ich mich für schöne klassische Lederschuhe (Oxford, Derby) und einen klassischen Kleidungsstil. Die Idee für den klassischen Kleidungsstil, in der englischen Welt auch *Sartorial* genannt, wurde mir von der Filmreihe [Kingsman](https://de.wikipedia.org/wiki/Kingsman:_The_Secret_Service) näher gebracht. Darauf hin habe ich mich eingehender mit dem Thema beschäftigt und bin auf Literatur und YouTube-Kanäle gestoßen. 
 
 *Viel Spaß beim Lesen!*
