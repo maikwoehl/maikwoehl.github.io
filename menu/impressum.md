@@ -6,7 +6,7 @@ title: Impressum
 <p>Maik W&#246;hl<br/>
 Lise-Meitner-Str. 5<br/>
 26723 Emden<br/>
-Tel: 04921 / 935-4977<br/>
+Tel: 04921 / 825-8820 <br/>
 maik.woehl [at] outlook.de
 </p>
 <meta name="generator" content="Impressum-Generator der Kanzlei Hensche Rechtsanwälte"/>
