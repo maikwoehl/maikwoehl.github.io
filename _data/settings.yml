@@ -11,11 +11,12 @@ menu:
 - {name: 'Blog', path: 'menu', url: 'writing.html'}
 - {name: 'Leseliste', path: 'menu', url: 'reading.html'}
 - {name: 'Kontakt', path: 'menu', url: 'contact.html'}
+- {name: 'Impressum', path: 'menu', url: 'impressum.html'}
 
 # Available social icons are powered by Font Awesome, so you can use any icon that they offer
 social:
 - {icon: 'github', link: 'https://www.github.com/maikwoehl'}
-#- {icon: 'twitter', link: 'https://twitter.com/paululele'}
+- {icon: 'twitter', link: 'https://twitter.com/maikweohl'}
 #- {icon: 'linkedin', link: 'http://www.linkedin.com/in/lenpaul/'}
 - {icon: 'envelope', link: 'mailto:maik.woehl@gmail.com'}
 - {icon: 'rss-square', link: '/feed.xml'}
