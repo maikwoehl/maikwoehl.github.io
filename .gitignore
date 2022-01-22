@@ -3,6 +3,7 @@ Gemfile.lock
 *.gem
 .sass-cache
 .jekyll-metadata
+.jekyll-cache
 .DS_Store
 *~
 .bundle

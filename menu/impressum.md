@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Impressum
+permalink: /impressum
 ---
 
 <p>Maik W&#246;hl<br/>

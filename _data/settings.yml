@@ -7,11 +7,11 @@ disqus:
 google-ID: ''
 
 menu:
-- {name: 'Über mich', path: 'menu', url: 'about.html'}
-- {name: 'Blog', path: 'menu', url: 'writing.html'}
-- {name: 'Leseliste', path: 'menu', url: 'reading.html'}
-- {name: 'Kontakt', path: 'menu', url: 'contact.html'}
-- {name: 'Impressum', path: 'menu', url: 'impressum.html'}
+- {name: 'Über mich', path: 'menu', url: 'about'}
+- {name: 'Blog', path: 'menu', url: 'writing'}
+- {name: 'Leseliste', path: 'menu', url: 'reading'}
+- {name: 'Kontakt', path: 'menu', url: 'contact'}
+- {name: 'Impressum', path: 'menu', url: 'impressum'}
 
 # Available social icons are powered by Font Awesome, so you can use any icon that they offer
 social:

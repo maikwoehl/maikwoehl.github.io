@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Willkommen!
+permalink: /about
 ---
 
 Die Schreiben eines Blogs hat mich schon seit Kindertagen fasziniert. Schon immer wollte ich interessante Gedanken mit anderen Teilen. So habe ich meine Gedanken früher auf meinem [alten Blog](https://wp.maikwoehl.de) geteilt und schreibe nun hier auf einem etwas aufgeräumteren Blog.
